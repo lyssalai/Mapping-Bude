@@ -7,44 +7,113 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggmap)
+library(magick)
 ```
 
 ## Bude
+
+```{r echo=FALSE}
+
+Bude <- image_scale(image_read('https://www.coastmagazine.co.uk/sites/default/files/map_budelores.jpg',"500x"))
+plot(Bude)
+
+```
 
 Bude is a small seaside resort town in North Cornwall, England, UK, in the civil parish of Bude-Stratton and at the mouth of the River Neet. It is sometimes formerly known as Bude Haven. It lies southwest of Stratton, south of Flexbury and Poughill, and north of Widemouth Bay and is located along the A3073 road off the A39. Bude is twinned with Ergué-Gabéric in Brittany, France. Bude's coast faces Bude Bay in the Celtic Sea, part of the Atlantic Ocean. The population of the civil parish can be found under Bude-Stratton.
 
 ***
 
-## Roadmap of Bude
+## Road Map of Bude
 
-```{r pressure, echo=FALSE}
+```{r echo=FALSE, fig.cap = "Road Map"}
 
-library(ggmap)
-
-register_google(key = "AIzaSyA0HviPgqohxrKU3qhgBZHUvu1ImGAl5z4")
-
-roads <- get_map(location = c(-4.543678, 50.82664), zoom = 14)
+roads <- get_map(source = "stamen", location = c(-4.543678, 50.82664), zoom = 14)
 ggmap(roads)
 
 ```
 
 ***
 
-## Watercolour Map of But
+## Watercolour Map of Bude
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-
-library(ggmap)
-
-register_google(key = "AIzaSyA0HviPgqohxrKU3qhgBZHUvu1ImGAl5z4")
+```{r echo=FALSE, fig.cap = "Watercolour Map"}
 
 watercolour <- get_map(location = c(-4.543678, 50.82664), zoom = 15, maptype = "watercolor")
 ggmap(watercolour)
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+***
+
+## 3 Vacation Spots in Bude
+
+```{r pressure, echo=FALSE}
+
+names1 <- data.frame(location = c("Crooklets Beach", "Summerleaze Beach", "The Beach at Bude"),
+                        values = c(10,10),
+                        stringsAsFactors = FALSE)
+locs1 <- geocode(names$location)
+names1 <- cbind(names, locs1)
+
+ggmap(roads) +
+  geom_point(data = names1,
+             aes(x = lon, y = lat, size = values),
+             color = "black",
+             size = 3) +
+  geom_text(data = names1,
+            aes(x = lon, y = lat, label = location),
+            color = "red",
+            size = 3)
+
+```
+
+The 3 spots on the map marks 3 tourist spots in Bude, The Beach at Bude, Crooklets Beach, and Summerleaze Beach.  
+
+The **Beach at Bude** is a small yet luxury hotel that overloooks Summerleaze Beach. It has sixteen rooms, including suites, deluxe rooms, and classic rooms. The hotel also has a bar, restaurant, and spa. It has over 4.5 stars on various different travel websites.  
+
+The **Summerleaze Beach** is a beach that is only a five minute walk from the centre of Bude with sand dunes and bouncy cross waves. The beach is sheltered with breakwater and has a seapool at the foot of the cliffs. It is also very handicap-accessible, as the beach provides access from the carpark and offers sand chairs for the handicapped.  
+
+The **Crooklets Beach** is a beach that is bordered by rocky outcrops and golden sand located down the hill from the town centre. It is popular with tourists, especially experienced surfers. Dogs are allowed on the beach from September to April as well. It has a viewing area, a play area, and a beach cafe.
+
+***
+
+## Route from North Cornwall Cricket Club to Crooklets Inn
+
+```{r pressure, echo=FALSE}
+
+from <- "Bude North Cornwall Cricket Club, Bude"
+to <- "Bar 35, Bude"
+
+path <- route(start, end, structure = "route")
+path_df <- na.omit(data.frame(path))
+
+names2 <- data.frame(location2 = c("Bude North Cornwall Cricket Club", "Bar 35"),
+                     values = c(15, 15),
+                     stringsAsFactors = FALSE)
+locs2 <- geocode(names2$location2)
+names2 <- cbind(names2, locs2)
+
+ggmap(roads) +
+  geom_path(data = path_df,
+            aes(x = lon, y = lat),
+            color = "blue",
+            size = 1,
+            lineend = "round") +
+  geom_point(data = names2,
+             aes(x = lon, y = lat, size = values),
+             color = "black",
+             size = 1) +
+  geom_text(data = names2,
+            aes(x = lon, y = lat, label = location2),
+            color = "red",
+            size = 2)
+
+```
+
+The **Bar 35** in Bude is a boutique cafe by day, and a pub by night. It is a live music venue as well and hosts a variety of artists such as blues bands to electrofunk DJ's. The bar serve coffees and spirits, and it also provides other forms of entertainment like pool tables and a dart board. Dogs are also welcome in the establishment.  
+
+The **Bude North Cornwall Cricket Club** is a club located at the clifftops in Bude and overlooks the Atlantic Ocean. It is over 140 years old, opening in 1870. The Cricket Club also has hosted several cricket competitions and continues to host many cricket teams from around the world. In addition, it also has three senior sides and one league side.  
+
+The drive from the Bude North Cornwall Cricket Club to Bar 35 is a 5-minute drive or a 15-minute walk along the beach.
