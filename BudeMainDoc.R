@@ -2,10 +2,10 @@ library(tidyverse)
 library(ggmap)
 library(maps)
 
-register_google(key = "AIzaSyDFMjfgtEEKepiYLNu5dDtV5B8n7YvDKuM")
+register_google(key = "AIzaSyA0HviPgqohxrKU3qhgBZHUvu1ImGAl5z4")
 
 #Watercolour Bude Map
-watercolour <- get_map(location = "Bude", zoom = 15, maptype = "watercolor")
+watercolour <- get_map(location = c(-4.543678, 50.82664), zoom = 15, maptype = "watercolor")
 ggmap(watercolour)
 
 #Roadmap of Bude
