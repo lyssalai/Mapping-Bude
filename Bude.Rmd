@@ -2,7 +2,7 @@
 title: "Bude, UK"
 author: "Alyssa Lai"
 date: "4/15/2018"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
