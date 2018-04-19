@@ -9,6 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggmap)
+library(maps)
 library(magick)
 ```
 
@@ -17,7 +18,7 @@ library(magick)
 ```{r echo=FALSE}
 
 Bude <- image_scale(image_read('https://www.coastmagazine.co.uk/sites/default/files/map_budelores.jpg',"500x"))
-plot(Bude)
+print(Bude)
 
 ```
 
@@ -29,7 +30,7 @@ Bude is a small seaside resort town in North Cornwall, England, UK, in the civil
 
 ```{r echo=FALSE, fig.cap = "Road Map"}
 
-roads <- get_map(source = "stamen", location = c(-4.543678, 50.82664), zoom = 14)
+roads <- get_map(location = c(-4.543678, 50.82664), zoom = 14)
 ggmap(roads)
 
 ```
@@ -47,15 +48,15 @@ ggmap(watercolour)
 
 ***
 
-## 3 Vacation Spots in Bude
+## 2 Vacation Spots in Bude
 
-```{r pressure, echo=FALSE}
+```{r eval=FALSE}
 
-names1 <- data.frame(location = c("Crooklets Beach", "Summerleaze Beach", "The Beach at Bude"),
+names1 <- data.frame(location = c("Crooklets Beach", "Summerleaze Beach"),
                         values = c(10,10),
                         stringsAsFactors = FALSE)
-locs1 <- geocode(names$location)
-names1 <- cbind(names, locs1)
+locs1 <- geocode(names1$location)
+names1 <- cbind(names1, locs1)
 
 ggmap(roads) +
   geom_point(data = names1,
@@ -69,9 +70,15 @@ ggmap(roads) +
 
 ```
 
-The 3 spots on the map marks 3 tourist spots in Bude, The Beach at Bude, Crooklets Beach, and Summerleaze Beach.  
 
-The **Beach at Bude** is a small yet luxury hotel that overloooks Summerleaze Beach. It has sixteen rooms, including suites, deluxe rooms, and classic rooms. The hotel also has a bar, restaurant, and spa. It has over 4.5 stars on various different travel websites.  
+```{r echo=FALSE}
+
+Beaches <- image_read("2 beaches.png","500x")
+plot(Beaches)
+
+```
+
+The 2 spots on the map marks 2 tourist spots in Bude, Crooklets Beach and Summerleaze Beach.  
 
 The **Summerleaze Beach** is a beach that is only a five minute walk from the centre of Bude with sand dunes and bouncy cross waves. The beach is sheltered with breakwater and has a seapool at the foot of the cliffs. It is also very handicap-accessible, as the beach provides access from the carpark and offers sand chairs for the handicapped.  
 
@@ -81,12 +88,12 @@ The **Crooklets Beach** is a beach that is bordered by rocky outcrops and golden
 
 ## Route from North Cornwall Cricket Club to Crooklets Inn
 
-```{r pressure, echo=FALSE}
+```{r echo=FALSE}
 
 from <- "Bude North Cornwall Cricket Club, Bude"
 to <- "Bar 35, Bude"
 
-path <- route(start, end, structure = "route")
+path <- route(from, to, structure = "route")
 path_df <- na.omit(data.frame(path))
 
 names2 <- data.frame(location2 = c("Bude North Cornwall Cricket Club", "Bar 35"),
@@ -100,15 +107,7 @@ ggmap(roads) +
             aes(x = lon, y = lat),
             color = "blue",
             size = 1,
-            lineend = "round") +
-  geom_point(data = names2,
-             aes(x = lon, y = lat, size = values),
-             color = "black",
-             size = 1) +
-  geom_text(data = names2,
-            aes(x = lon, y = lat, label = location2),
-            color = "red",
-            size = 2)
+            lineend = "round")
 
 ```
 
@@ -117,3 +116,4 @@ The **Bar 35** in Bude is a boutique cafe by day, and a pub by night. It is a li
 The **Bude North Cornwall Cricket Club** is a club located at the clifftops in Bude and overlooks the Atlantic Ocean. It is over 140 years old, opening in 1870. The Cricket Club also has hosted several cricket competitions and continues to host many cricket teams from around the world. In addition, it also has three senior sides and one league side.  
 
 The drive from the Bude North Cornwall Cricket Club to Bar 35 is a 5-minute drive or a 15-minute walk along the beach.
+

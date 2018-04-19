@@ -11,11 +11,12 @@ roads <- get_map(location = c(-4.543678, 50.82664), zoom = 14)
 ggmap(roads)
 
 #Beaches
-names1 <- data.frame(location = c("Crooklets Beach", "Summerleaze Beach", "The Beach at Bude"),
-                     values = c(10,10),
-                     stringsAsFactors = FALSE)
-locs1 <- geocode(names$location)
-names1 <- cbind(names, locs1)
+names1 <- data.frame(location = c("Crooklets Beach", "Summerleaze Beach"),
+                        values = c(10,10),
+                        stringsAsFactors = FALSE)
+locs1 <- geocode(names1$location)
+names1 <- cbind(names1, locs1)
+names1 <- names1[, colSums(is.na(df)) != nrow(df)]
 
 ggmap(roads) +
   geom_point(data = names1,
@@ -64,3 +65,7 @@ ggmap(roads) +
             aes(x = lon, y = lat, label = location2),
             color = "red",
             size = 2)
+
+
+
+
