@@ -17,7 +17,7 @@ library(magick)
 
 ```{r echo=FALSE}
 
-Bude <- image_scale(image_read('https://www.coastmagazine.co.uk/sites/default/files/map_budelores.jpg',"500x"))
+Bude <- image_scale(image_read('https://www.coastmagazine.co.uk/sites/default/files/map_budelores.jpg',"200x"))
 print(Bude)
 
 ```
